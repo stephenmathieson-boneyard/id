@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>id()</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/components/visionmedia-mocha/mocha.css">
+    <script src="/components/visionmedia-mocha/mocha.js"></script>
+    <script src="/components/rowanmanning-proclaim/lib/proclaim.js"></script>
+    <script>
+      mocha.setup('bdd')
+      assert = proclaim
+    </script>
+    <script src="/build/build.js"></script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <div id="fixture"></div>
+    <script>
+      var id = require('id')
+
+      describe('id', function () {
+
+        before(function () {
+          id('fixture').innerHTML = '<div id="foo"></div>'
+        })
+
+        it('should be a function', function () {
+          assert.isFunction(id)
+        })
+
+        it('should return the correct element', function () {
+          assert.strictEqual(id('foo'), document.getElementById('foo'))
+        })
+
+        it('should cache lookups', function () {
+          assert.strictEqual(id.cache.foo, document.getElementById('foo'))
+        })
+
+        it('should return items from the cache', function () {
+          id.cache.foo = 'bar'
+          assert.equal(id.cache.foo, 'bar')
+        })
+
+      })
+
+      mocha.run()
+    </script>
+  </body>
+</html>
